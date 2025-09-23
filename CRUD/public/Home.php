@@ -58,7 +58,7 @@ if ($sql->num_rows > 0) {
                             </h2>
                             <!-- <form action="../public/actionsNotes/createNote.php" method="POST"> -->
                             <form action="">
-                                <button class="btn btn-outline-primary" >
+                                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#CriarNotaModal">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
                                     </svg>
@@ -67,15 +67,14 @@ if ($sql->num_rows > 0) {
                             </form>
                         </div>
 
-                        <?php 
-                        foreach( $notes as $note ): ?>
                         <div class="card p-3">
                             <h1 class="">Suas Notas</h1>
-                            <div class="card" style="width: 18rem;">
+                            <?php foreach( $notes as $note ): ?>
+                            <div class="card m-1" style="width: 18rem;">
                                 <div class="card-body">
                                     <h5 class="card-title"><?= $note['titulo']?></h5>
                                     <h6 class="card-subtitle mb-2 text-body-secondary"><?= $note['autor']?></h6>
-                                    <p class="card-text"><?= $note['anotacao']?></p>
+                                    <p class="card-text"><?= $note['text']?></p>
                                     <div class="actions">
                                         <a href="#" class="btn btn-primary text-light">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -92,42 +91,39 @@ if ($sql->num_rows > 0) {
                                     </div>
                                 </div>
                             </div>
+                            <?php endforeach; ?>
                         </div>
-                       <?php endforeach; ?>
-
-
-
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="modal fade" id="CriarNotaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+        <div class="modal fade modal-lg" id="CriarNotaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="CriarNotaModal">Crie sua nova nota.</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Autor" aria-label="Username" aria-describedby="visible-addon">
-                        <input type="text" class="form-control d-none" placeholder="Hidden input" aria-label="Hidden input" aria-describedby="visible-addon">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="CriarNotaModal">Crie sua nova nota.</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Titulo" aria-label="Username" aria-describedby="visible-addon">
-                        <input type="text" class="form-control d-none" placeholder="Hidden input" aria-label="Hidden input" aria-describedby="visible-addon">
+                    <div class="modal-body">
+                        <form>
+                            <div class="input-group">
+                                <input type="text" name="autor" class="form-control" placeholder="Autor">
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <input type="text" name="titulo" class="form-control" placeholder="Titulo">
+                            </div>
+                            <div class="mb-3">
+                                <label for="message-text" class="col-form-label">Nota:</label>
+                                <textarea class="form-control" name="text" id="message-text"></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" name="" class="btn btn-primary">Criar</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="mb-3">
-                        <label for="message-text" class="col-form-label">Nota:</label>
-                        <textarea class="form-control" id="message-text"></textarea>
-                    </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary">Criar </button>
                 </div>
             </div>
         </div>
