@@ -33,7 +33,7 @@ if (isset($_POST['login'])) {
 // --- LOGOUT ---
 if (isset($_POST['logout'])) {
     session_destroy();
-    header("Location: index.php");
+    header("Location: Home.php");
     exit;
 }
 ?>

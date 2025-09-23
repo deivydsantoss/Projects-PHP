@@ -1,5 +1,19 @@
 <?php
 session_start();
+
+
+require_once("configDatabase.php");
+
+$anotacoes = [];
+
+$sql = $conn->query( "SELECT * FROM anotacoes");
+
+if ($sql->num_rows > 0) {
+    $notes = $sql->fetch_all(MYSQLI_ASSOC);
+} else {
+    echo"nao tem nada";
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -9,15 +23,17 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD</title>
 
-    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-    <script type="text/javascript" src="../bootstrap/js/jquery-3.7.1.min.js" defer></script>
-    <script type="text/javascript" src="../bootstrap/js/bootstrap.bundle.min.js" defer></script>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script type="text/javascript" src="../js/jquery-3.7.1.min.js" defer></script>
+    <script type="text/javascript" src="../js/bootstrap.bundle.min.js" defer></script>
+    <script type="text/javascript" src=""></script>
 </head>
 <body class="bg-body-tertiary">
     <header>
         <nav class="navbar navbar-dark navbar-expand-lg bg-dark p-3">
             <div class="container">
                 <h1 class="navbar-brand">Notez</h1>
+                
 
                 <div class="float-end" id="navbarSupportedContent">
                     <form class="d-flex " role="search">
@@ -30,30 +46,36 @@ session_start();
     </header>
 
     <main>
+
         <div class="container mt-4">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
 
-                        <div class="card-header">
-                            <h2>
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="">
                                 Notas
-                                <a href="" class="btn btn-outline-primary float-end">
+                            </h2>
+                            <!-- <form action="../public/actionsNotes/createNote.php" method="POST"> -->
+                            <form action="">
+                                <button class="btn btn-outline-primary" >
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                                         <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
                                     </svg>
                                     Criar nota
-                                </a>
-                            </h2>
+                                </button>
+                            </form>
                         </div>
 
+                        <?php 
+                        foreach( $notes as $note ): ?>
                         <div class="card p-3">
                             <h1 class="">Suas Notas</h1>
                             <div class="card" style="width: 18rem;">
                                 <div class="card-body">
-                                    <h5 class="card-title">title</h5>
-                                    <h6 class="card-subtitle mb-2 text-body-secondary">nome do criador</h6>
-                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+                                    <h5 class="card-title"><?= $note['titulo']?></h5>
+                                    <h6 class="card-subtitle mb-2 text-body-secondary"><?= $note['autor']?></h6>
+                                    <p class="card-text"><?= $note['anotacao']?></p>
                                     <div class="actions">
                                         <a href="#" class="btn btn-primary text-light">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -71,11 +93,45 @@ session_start();
                                 </div>
                             </div>
                         </div>
-                       
+                       <?php endforeach; ?>
+
+
+
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="CriarNotaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="CriarNotaModal">Crie sua nova nota.</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Autor" aria-label="Username" aria-describedby="visible-addon">
+                        <input type="text" class="form-control d-none" placeholder="Hidden input" aria-label="Hidden input" aria-describedby="visible-addon">
+                    </div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Titulo" aria-label="Username" aria-describedby="visible-addon">
+                        <input type="text" class="form-control d-none" placeholder="Hidden input" aria-label="Hidden input" aria-describedby="visible-addon">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Nota:</label>
+                        <textarea class="form-control" id="message-text"></textarea>
+                    </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Criar </button>
+                </div>
+            </div>
+        </div>
+
     </main>
 </body>
 </html>

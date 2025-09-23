@@ -1,6 +1,6 @@
 <?php
 session_start();
-require "configUser.php";
+require "configDatabase.php";
 
 // LOGIN ou CADASTRO
 if (isset($_POST['action']) && $_POST['action'] === "login") {
