@@ -99,7 +99,7 @@ if ($sql->num_rows > 0) {
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="CriarNotaModal">Edite sua nota.</h1>
+                                                    <h1 class="modal-title fs-5" id="EditarNotaModal">Edite sua nota.</h1>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
@@ -132,6 +132,7 @@ if ($sql->num_rows > 0) {
                                                 <h1>Você tem certeza?</h1>
                                                 <div class="modal-footer">
                                                     <form action="./actionsNotes/moveToTrash.php" method="$_POST">
+                                                        <input type="hidden" name="id" value="<?= $note['id'] ?>" >
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                                                         <button type="submit" name="delete_usuario" class="btn btn-primary">Deletar</button>
                                                     </form>
