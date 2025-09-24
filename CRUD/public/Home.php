@@ -1,23 +1,21 @@
 <?php
-session_start();
-
-
 require_once("configDatabase.php");
 
 $anotacoes = [];
 
-$sql = $conn->query( "SELECT * FROM anotacoes");
+$sql = $conn->query("SELECT * FROM anotacoes");
 
 if ($sql->num_rows > 0) {
     $notes = $sql->fetch_all(MYSQLI_ASSOC);
 } else {
-    echo"nao tem nada";
+    echo "nao tem nada";
 }
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,16 +26,17 @@ if ($sql->num_rows > 0) {
     <script type="text/javascript" src="../js/bootstrap.bundle.min.js" defer></script>
     <script type="text/javascript" src=""></script>
 </head>
+
 <body class="bg-body-tertiary">
     <header>
         <nav class="navbar navbar-dark navbar-expand-lg bg-dark p-3">
             <div class="container">
                 <h1 class="navbar-brand">Notez</h1>
-                
+
 
                 <div class="float-end" id="navbarSupportedContent">
                     <form class="d-flex " role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
                         <button class="btn btn-outline-primary" type="submit">Search</button>
                     </form>
                 </div>
@@ -60,38 +59,89 @@ if ($sql->num_rows > 0) {
                             <form action="">
                                 <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#CriarNotaModal">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                                     </svg>
                                     Criar nota
                                 </button>
                             </form>
                         </div>
 
-                        <div class="card p-3">
+                        <div class="card-body p-3">
                             <h1 class="">Suas Notas</h1>
-                            <?php foreach( $notes as $note ): ?>
-                            <div class="card m-1" style="width: 18rem;">
-                                <div class="card-body">
-                                    <h5 class="card-title"><?= $note['titulo']?></h5>
-                                    <h6 class="card-subtitle mb-2 text-body-secondary"><?= $note['autor']?></h6>
-                                    <p class="card-text"><?= $note['text']?></p>
-                                    <div class="actions">
-                                        <a href="#" class="btn btn-primary text-light">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                                            </svg>
-                                        </a>
-                                        <a href="#" class="btn btn-danger text-light">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-                                            </svg>
-                                        </a>
+                            <div class="row">
+                                <?php foreach ($notes as $note): ?>
+                                    <div class="col-md-3 mb-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title"><?= $note['titulo'] ?></h5>
+                                                <h6 class="card-subtitle mb-2 text-body-secondary"><?= $note['autor'] ?></h6>
+                                                <p class="card-text"><?= $note['text'] ?></p>
+                                                <div class="">
+                                                    <button type="submit" class="btn btn-primary text-light col-md-3 " data-bs-toggle="modal" data-bs-target="#EditarNotaModal-<?= $note['id'] ?>">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                                                        </svg>
+                                                    </button>
+                                                    <button type="submit" class="btn btn-danger text-light col-md-3 " data-bs-toggle="modal" data-bs-target="#DeletarNotaModal-<?= $note['id'] ?>">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                                        </svg>
+                                                    </button>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+
+                                    <div class="modal fade modal-lg" id="EditarNotaModal-<?= $note['id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="CriarNotaModal">Edite sua nota.</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="./actionsNotes/editNote.php" method="POST">
+                                                        <input type="hidden" name="id" value="<?= $note['id'] ?>">
+                                                        <div class="input-group">
+                                                            <input type="text" name="autor" class="form-control" placeholder="Autor" value="<?= $note['autor'] ?>">
+                                                        </div>
+                                                        <br>
+                                                        <div class="input-group">
+                                                            <input type="text" name="titulo" class="form-control" placeholder="Titulo" value="<?= $note['titulo'] ?>">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="message-text" class="col-form-label">Nota:</label>
+                                                            <textarea class="form-control" name="text" id="message-text"><?= $note['text'] ?></textarea>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                            <button type="submit" name="edit_usuario" class="btn btn-primary">Editar</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade modal-lg" id="DeletarNotaModal-<?= $note['id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content p-1">
+                                                <h1>Você tem certeza?</h1>
+                                                <div class="modal-footer">
+                                                    <form action="./actionsNotes/moveToTrash.php" method="$_POST">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                        <button type="submit" name="delete_usuario" class="btn btn-primary">Deletar</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                <?php endforeach; ?>
                             </div>
-                            <?php endforeach; ?>
                         </div>
                     </div>
                 </div>
@@ -106,7 +156,7 @@ if ($sql->num_rows > 0) {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form action="./actionsNotes/createNote.php" method="POST">
                             <div class="input-group">
                                 <input type="text" name="autor" class="form-control" placeholder="Autor">
                             </div>
@@ -120,7 +170,7 @@ if ($sql->num_rows > 0) {
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" name="" class="btn btn-primary">Criar</button>
+                                <button type="submit" name="create_usuario" class="btn btn-primary">Criar</button>
                             </div>
                         </form>
                     </div>
@@ -130,4 +180,5 @@ if ($sql->num_rows > 0) {
 
     </main>
 </body>
+
 </html>
