@@ -131,10 +131,10 @@ if ($sql->num_rows > 0) {
                                             <div class="modal-content p-1">
                                                 <h1>Você tem certeza?</h1>
                                                 <div class="modal-footer">
-                                                    <form action="./actionsNotes/moveToTrash.php" method="$_POST">
-                                                        <input type="hidden" name="id" value="<?= $note['id'] ?>" >
+                                                    <form action="./actionsNotes/moveToTrash.php" method="POST">
+                                                        <input type="hidden" name="id" value="<?= $note['id'] ?>">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                        <button type="submit" name="delete_usuario" class="btn btn-primary">Deletar</button>
+                                                        <button type="submit" name="" class="btn btn-primary">Deletar</button>
                                                     </form>
                                                 </div>
                                             </div>
