@@ -1,7 +1,10 @@
 <?php
 require_once("configDatabase.php");
 
-if($_POST['lixeira']){
+
+if(isset($_POST['lixeira'])){
+    $lixeira = mysqli_real_escape_string($conn, isset($_POST['lixeira']));
+
     $sql = $conn->query("SELECT * FROM anotacoes WHERE status = '0'");
 
     if ($sql->num_rows > 0) {
@@ -11,8 +14,8 @@ if($_POST['lixeira']){
     }
 }
 
-if ($_POST['busca']) {
-    $busca = mysqli_real_escape_string($conn, $_POST['busca']);
+if (isset($_POST['busca'])) {
+    $busca = mysqli_real_escape_string($conn, isset($_POST['busca']));
 
     $sth = $conn->query("SELECT * FROM anotacoes WHERE status = '1' AND (titulo LIKE '%$busca%' OR autor LIKE '%$busca%' OR text LIKE '%$busca%')");
 
@@ -28,8 +31,6 @@ if ($_POST['busca']) {
         echo "nao tem nada";
     }
 }
-
-
 
 ?>
 
@@ -53,7 +54,8 @@ if ($_POST['busca']) {
             <div class="container">
                 <h1 class="navbar-brand">Notez</h1>
 
-                <form action="Home.php" method="POST">
+                <form class="" action="Home.php" method="POST">
+                    
                     <button class="btn btn-secondary" type="submit" name="lixeira">Lixeira</button>
                 </form>
 
@@ -83,7 +85,6 @@ if ($_POST['busca']) {
                             <h2 class="">
                                 Notas
                             </h2>
-                            <!-- <form action="../public/actionsNotes/createNote.php" method="POST"> -->
                             <form action="">
                                 <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#CriarNotaModal">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
@@ -99,7 +100,7 @@ if ($_POST['busca']) {
                             <div class="d-flex justify-content-between align-items-center">
                                 <h1 class="">Suas Notas</h1>
                                 <?php
-                                if($_POST['busca']){
+                                if(isset($_POST['busca'])){
                                     echo'
                                     <a href="Home.php" type="button" class="btn btn-secondary h-50">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
