@@ -1,15 +1,35 @@
 <?php
 require_once("configDatabase.php");
 
-$anotacoes = [];
+if($_POST['lixeira']){
+    $sql = $conn->query("SELECT * FROM anotacoes WHERE status = '0'");
 
-$sql = $conn->query("SELECT * FROM anotacoes");
-
-if ($sql->num_rows > 0) {
-    $notes = $sql->fetch_all(MYSQLI_ASSOC);
-} else {
-    echo "nao tem nada";
+    if ($sql->num_rows > 0) {
+        $notes = $sql->fetch_all(MYSQLI_ASSOC);
+    } else {
+        echo "nao tem nada";
+    }
 }
+
+if ($_POST['busca']) {
+    $busca = mysqli_real_escape_string($conn, $_POST['busca']);
+
+    $sth = $conn->query("SELECT * FROM anotacoes WHERE status = '1' AND (titulo LIKE '%$busca%' OR autor LIKE '%$busca%' OR text LIKE '%$busca%')");
+
+    $notes = $sth->fetch_all(MYSQLI_ASSOC);
+
+
+} else {
+    $sql = $conn->query("SELECT * FROM anotacoes WHERE status = '1'");
+
+    if ($sql->num_rows > 0) {
+        $notes = $sql->fetch_all(MYSQLI_ASSOC);
+    } else {
+        echo "nao tem nada";
+    }
+}
+
+
 
 ?>
 
@@ -33,17 +53,20 @@ if ($sql->num_rows > 0) {
             <div class="container">
                 <h1 class="navbar-brand">Notez</h1>
 
+                <form action="Home.php" method="POST">
+                    <button class="btn btn-secondary" type="submit" name="lixeira">Lixeira</button>
+                </form>
 
                 <div class="float-end" id="navbarSupportedContent">
-                    <form class="d-flex " role="search" action="./actionsNotes/searchNote.php" method="GET">
-                        
+                    <form class="d-flex " role="search" action="Home.php" method="POST">
                         <input class="form-control me-2" type="search" name="busca" placeholder="Buscar nota..." aria-label="Search" />
-                        <button class="btn btn-primary" type="submit">
+                        <button class="btn btn-primary me-2" type="submit">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
                             </svg>
                         </button>
                     </form>
+                    
                 </div>
             </div>
         </nav>
@@ -71,8 +94,22 @@ if ($sql->num_rows > 0) {
                             </form>
                         </div>
 
+
                         <div class="card-body p-3">
-                            <h1 class="">Suas Notas</h1>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h1 class="">Suas Notas</h1>
+                                <?php
+                                if($_POST['busca']){
+                                    echo'
+                                    <a href="Home.php" type="button" class="btn btn-secondary h-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5"/>
+                                    </svg>
+                                    Voltar
+                                    </a>';
+                                }
+                                ?>
+                            </div>
                             <div class="row">
                                 <?php foreach ($notes as $note): ?>
                                     <div class="col-md-3 mb-3">
@@ -94,7 +131,7 @@ if ($sql->num_rows > 0) {
                                                             <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
                                                         </svg>
                                                     </button>
-                                                    
+
                                                 </div>
                                             </div>
                                         </div>
