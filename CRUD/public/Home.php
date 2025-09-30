@@ -2,13 +2,16 @@
 require_once("configDatabase.php");
 
 
+
+
 if(isset($_POST['lixeira'])){
+    
     $lixeira = mysqli_real_escape_string($conn, isset($_POST['lixeira']));
 
     $sql = $conn->query("SELECT * FROM anotacoes WHERE status = '0'");
 
     if ($sql->num_rows > 0) {
-        $notes = $sql->fetch_all(MYSQLI_ASSOC);
+        $notes_trash = $sql->fetch_all(MYSQLI_ASSOC);
     } else {
         echo "nao tem nada";
     }
@@ -31,6 +34,8 @@ if (isset($_POST['busca'])) {
         echo "nao tem nada";
     }
 }
+
+
 
 ?>
 
@@ -55,8 +60,7 @@ if (isset($_POST['busca'])) {
                 <h1 class="navbar-brand">Notez</h1>
 
                 <form class="" action="Home.php" method="POST">
-                    
-                    <button class="btn btn-secondary" type="submit" name="lixeira">Lixeira</button>
+                    <button class="btn btn-secondary" type="submit" name="lixeira" value="0">Lixeira</button>
                 </form>
 
                 <div class="float-end" id="navbarSupportedContent">
@@ -101,6 +105,17 @@ if (isset($_POST['busca'])) {
                                 <h1 class="">Suas Notas</h1>
                                 <?php
                                 if(isset($_POST['busca'])){
+                                    echo'
+                                    <a href="Home.php" type="button" class="btn btn-secondary h-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5"/>
+                                    </svg>
+                                    Voltar
+                                    </a>';
+                                }
+                                ?>
+                                <?php
+                                if(isset($_POST['lixeira'])){
                                     echo'
                                     <a href="Home.php" type="button" class="btn btn-secondary h-50">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
@@ -176,6 +191,80 @@ if (isset($_POST['busca'])) {
                                                 <div class="modal-footer">
                                                     <form action="./actionsNotes/moveToTrash.php" method="POST">
                                                         <input type="hidden" name="id" value="<?= $note['id'] ?>">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                        <button type="submit" name="" class="btn btn-primary">Deletar</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                <?php endforeach; ?>
+
+                                <?php foreach ($notes_trash as $note_trash): ?>
+                                    <div class="col-md-3 mb-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title"><?= $note_trash['titulo'] ?></h5>
+                                                <h6 class="card-subtitle mb-2 text-body-secondary"><?= $note_trash['autor'] ?></h6>
+                                                <p class="card-text"><?= $note_trash['text'] ?></p>
+                                                <div class="">
+                                                    <button type="submit" class="btn btn-primary text-light col-md-3 " data-bs-toggle="modal" data-bs-target="#EditarNotaModal-<?= $note_trash['id'] ?>">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                                                        </svg>
+                                                    </button>
+                                                    <button type="submit" class="btn btn-danger text-light col-md-3 " data-bs-toggle="modal" data-bs-target="#DeletarNotaModal-<?= $note_trash['id'] ?>">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                                        </svg>
+                                                    </button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade modal-lg" id="EditarNotaModal-<?= $note_trash['id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="EditarNotaModal">Edite sua nota.</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="./actionsNotes/editNote.php" method="POST">
+                                                        <input type="hidden" name="id" value="<?= $note_trash['id'] ?>">
+                                                        <div class="input-group">
+                                                            <input type="text" name="autor" class="form-control" placeholder="Autor" value="<?= $note_trash['autor'] ?>">
+                                                        </div>
+                                                        <br>
+                                                        <div class="input-group">
+                                                            <input type="text" name="titulo" class="form-control" placeholder="Titulo" value="<?= $note_trash['titulo'] ?>">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="message-text" class="col-form-label">Nota:</label>
+                                                            <textarea class="form-control" name="text" id="message-text"><?= $note_trash['text'] ?></textarea>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                            <button type="submit" name="edit_usuario" class="btn btn-primary">Editar</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade modal-lg" id="DeletarNotaModal-<?= $note_trash['id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content p-1">
+                                                <h1>Você tem certeza?</h1>
+                                                <div class="modal-footer">
+                                                    <form action="./actionsNotes/Trash.php" method="POST">
+                                                        <input type="hidden" name="id" value="<?= $note_trash['id'] ?>">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                                                         <button type="submit" name="" class="btn btn-primary">Deletar</button>
                                                     </form>
