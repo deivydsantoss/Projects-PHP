@@ -11,3 +11,6 @@ if (isset($_POST)) {
     
     mysqli_query($conn, $sql);    
 }
+
+header("Location: ../Home.php");
+exit;
